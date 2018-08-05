@@ -35,7 +35,12 @@ audioFile.onchange = function(){ //plays the user's uploaded audio file when it 
 }
 
 function draw(){
+
+    analyser.getByteFrequencyData(freqArr);
+    console.log(freqArr.length);
+
     for(var i = 0; i < 128; i++){
+        console.log(freqArr[i]);
         var rand = (Math.random() * 99);
 
         r = r + 10;
