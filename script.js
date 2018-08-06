@@ -1,4 +1,4 @@
-var audio, canvas, context, audioctx, analyser, source, freqArr
+var audio, canvas, context, audioctx, analyser, source, freqArr, barHeight;
 var WIDTH = 1024;
 var HEIGHT = 100;
 var r = 0;
@@ -20,7 +20,8 @@ function initialize(){
 
     freqArr = new Uint8Array(analyser.frequencyBinCount);
 
-    draw();
+    //draw();
+    window.requestAnimationFrame(draw);
 }
 
 audioFile.onchange = function(){ //plays the user's uploaded audio file when it is uploaded
@@ -32,16 +33,24 @@ audioFile.onchange = function(){ //plays the user's uploaded audio file when it 
         audio.play();
     }
     reader.readAsDataURL(this.files[0]);
+    //draw();
 }
 
 function draw(){
-
+    r = 0;
+    g = 0;
+    b = 255;
+    x = 0;
+    context.clearRect(0,0,WIDTH, HEIGHT);
     analyser.getByteFrequencyData(freqArr);
-    console.log(freqArr.length);
+    //console.log(freqArr.length);
 
     for(var i = 0; i < 128; i++){
-        console.log(freqArr[i]);
-        var rand = (Math.random() * 99);
+        //console.log(freqArr[i]);
+        //console.log("draw loop " + i);
+        barHeight = (Math.random() * 99);
+        //console.log(barHeight);
+        //barHeight = freqArr[i] % 99; //I NEED TO WRITE CODE TO UPDATE THE AUDIO VARIABLE AND FREQ ARR EVERY TIME A NEW SONG IS LOADED
 
         r = r + 10;
         if(r > 255){
@@ -55,10 +64,17 @@ function draw(){
         if(b < 0){
         b = 0;
         }
+
         context.fillStyle = "rgb(" + r + "," + g + "," + b + ")"; //rgb color cycle 
-        //context.fillStyle = "rgb(" + 50 + "," + 50 + "," + (100 + (100 - rand)) + ")"; //blue color gradient depending on height of bar
-        context.fillRect(x,0 + rand, 6, 100 - rand); //random bar height
+        //context.save();
+
+        //context.fillStyle = "rgb(" + 50 + "," + 50 + "," + (100 + (100 - barHeight)) + ")"; //blue color gradient depending on height of bar
+
+        //context.restore();
+        context.fillRect(x,0 + barHeight, 6, 100 - barHeight); //random bar height
         //context.fillRect(x,HEIGHT - barHeight/2, 6, barHeight);
         x = x + 8;
     }
+
+    window.requestAnimationFrame(draw);
 }
