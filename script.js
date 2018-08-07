@@ -2,19 +2,21 @@ var audio, canvas, context, audioctx, analyser, oscillator, freqArr, barHeight, 
 var rand = 0;
 var pastIndex = 900;
 var WIDTH = 1024;
-var HEIGHT = 300;
+var HEIGHT = 350;
 var INTERVAL = 128;
-var SAMPLES = 2048;
+var SAMPLES = 512;//2048;
 var r = 0;
 var g = 0;
 var b = 255;
 var x = 0;
 
 //1. NEED TO FIX ISSUE OF ONLY BEING ABLE TO PLAY ONE SONG BEFORE THE PROGRAM CRASHES
-//2. NEED TO ADD OPTION TO CHOOSE COLOR PALETTE
-//3. NEED TO ADD VOLUME SLIDER
-//4. NEED TO MAKE BACKGROUND EFFECTS
-//5. MAYBE ADD SONGS TO QUEUE? SHUFFLE FROM FOLDER?
+//2. RESOLVE ISSUE OF SCALING THE BARS BASED ON MAX FREQUENCY
+//3. NEED TO ADD OPTION TO CHOOSE COLOR PALETTE
+//4. NEED TO ADD VOLUME SLIDER
+//5. NEED TO ORGANIZE LAYOUT AND CSS
+//6. NEED TO MAKE BACKGROUND EFFECTS
+//7. MAYBE ADD SONGS TO QUEUE? SHUFFLE FROM FOLDER?
 
 function initialize(){
     canvas = document.getElementById("cnv1"); //drawing the canvas
@@ -105,11 +107,10 @@ function draw(){
             //console.log(max);
             */
             max = 900; //default placeholder
-            var num = (max - INTERVAL*Math.floor(max/INTERVAL)) + (Math.floor(max/INTERVAL)*i);
+            //var num = (max - INTERVAL*Math.floor(max/INTERVAL)) + (Math.floor(max/INTERVAL)*i);
+            var num = i;
 
-            barHeight = (freqArr[num] * (4/3)) + 2; //exaggerate the bar
-
-            //for frequency
+            barHeight = (freqArr[num] * (4/3)) + 2; //exaggerate the bar //for frequency
             //barHeight = (Math.abs(freqArr[i*(WIDTH/INTERVAL)]) - 120) * 2 + 1; //for time 
             
 
