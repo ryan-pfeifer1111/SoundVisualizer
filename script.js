@@ -1,6 +1,8 @@
 var audio, canvas, context, audioctx, analyser, oscillator, freqArr, barHeight, source;
 var WIDTH = 1024;
-var HEIGHT = 255;
+var HEIGHT = 300;
+var INTERVAL = 128;
+var SAMPLES = 2048;
 var r = 0;
 var g = 0;
 var b = 255;
@@ -14,7 +16,7 @@ function initialize(){
 
     audioctx = new AudioContext(); //setting up audio analyzer to get frequency info
     analyser = audioctx.createAnalyser();
-    analyser.fftSize = 256;
+    analyser.fftSize = SAMPLES;
     
     oscillator = audioctx.createOscillator();
     oscillator.connect(audioctx.destination);
@@ -27,6 +29,8 @@ function initialize(){
     //source = audioctx.createMediaElementSource(audio);    
     //source.connect(analyser);
     //source.connect(audioctx.destination); //from online help
+
+    ////var buffer = audioctx.createBufferSource();
 
     freqArr = new Uint8Array(analyser.frequencyBinCount);
     //analyser.getByteFrequencyData(freqArr);
@@ -56,6 +60,16 @@ audioFile.onchange = function(){ //plays the user's uploaded audio file when it 
     //draw();
 }
 
+function maxIndex(arr){ //finds the highest-numbered index with a nonzero value
+    var maxIndex = 0;
+    for(var i = 1; i < arr.length; i++){
+        if(arr[i] != 0){
+            maxIndex = i;
+        }
+    }
+    return maxIndex;
+}
+
 
 
 function draw(){
@@ -65,15 +79,17 @@ function draw(){
         b = 255;
         x = 0;
         context.clearRect(0,0,WIDTH, HEIGHT);
-        analyser.getByteFrequencyData(freqArr); //THIS ARRAY IS FULL OF ALL 0'S 
+        analyser.getByteFrequencyData(freqArr);
+        //analyser.getByteTimeDomainData(freqArr);
         console.log(freqArr);
-        for(var i = 0; i < 128; i++){
-            //console.log(freqArr[i]);
-            //console.log("draw loop " + i);
-            //console.log(barHeight);
+        for(var i = 0; i < INTERVAL; i++){
             //barHeight = (Math.random() * HEIGHT);
-            barHeight = (freqArr[i] % HEIGHT) + 1;
-            //barHeight = (barHeight + 1) % HEIGHT;
+            var max = maxIndex(freqArr);
+            //console.log(max);
+            var num = (max - INTERVAL*Math.floor(max/INTERVAL)) + (Math.floor(max/INTERVAL)*i);
+
+            barHeight = (freqArr[num] * (3/2)) + 2; //for frequency
+            //barHeight = (Math.abs(freqArr[i*(WIDTH/INTERVAL)]) - 120) * 2 + 1; //for time 
             
 
             r = r + 10;
@@ -95,11 +111,13 @@ function draw(){
             //context.fillStyle = "rgb(" + 50 + "," + 50 + "," + (100 + (100 - barHeight)) + ")"; //blue color gradient depending on height of bar
 
             //context.restore();
-            context.fillRect(x, HEIGHT - barHeight, 6, barHeight);
+            context.fillRect(x, HEIGHT - barHeight, (WIDTH/INTERVAL) - 1 , barHeight);
             //context.fillRect(x,HEIGHT - barHeight/2, 6, barHeight);
-            x = x + 8;
+            x = x + (WIDTH/INTERVAL);
         }
     }
 
-    window.requestAnimationFrame(draw);
+    window.requestAnimationFrame(draw); //OLD WAY
+    //var fps = 30;
+    //setTimeout(draw, 1000 / fps);
 }
