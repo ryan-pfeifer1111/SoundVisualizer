@@ -10,6 +10,12 @@ var g = 0;
 var b = 255;
 var x = 0;
 
+//1. NEED TO FIX ISSUE OF ONLY BEING ABLE TO PLAY ONE SONG BEFORE THE PROGRAM CRASHES
+//2. NEED TO ADD OPTION TO CHOOSE COLOR PALETTE
+//3. NEED TO ADD VOLUME SLIDER
+//4. NEED TO MAKE BACKGROUND EFFECTS
+//5. MAYBE ADD SONGS TO QUEUE? SHUFFLE FROM FOLDER?
+
 function initialize(){
     canvas = document.getElementById("cnv1"); //drawing the canvas
     context = canvas.getContext("2d");
