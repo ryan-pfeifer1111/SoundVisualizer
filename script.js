@@ -3,8 +3,8 @@ var colorStyle = 0;
 var pastIndex = 900;
 var WIDTH = 1024;
 var HEIGHT = 350;
-var INTERVAL = 256;
-var SAMPLES = 512;//2048;
+var INTERVAL = 128;//256;
+var SAMPLES = 4096;//1024;//512;//2048;
 var r = 0;
 var g = 0;
 var b = 255;
@@ -50,7 +50,7 @@ function initialize(){
     //analyser.getByteFrequencyData(freqArr);
 
     barHeight = HEIGHT;
-    
+
     //draw();
     window.requestAnimationFrame(draw);
 }
@@ -139,9 +139,15 @@ function draw(){
             max = 900; //default placeholder
             //var num = (max - INTERVAL*Math.floor(max/INTERVAL)) + (Math.floor(max/INTERVAL)*i);
             var num = i;
-
-            barHeight = (freqArr[num] * 1) + 2; //exaggerate the bar //for frequency
+            /*if(i >= INTERVAL/4){ //SKIPS MIDDLE FREQUENCIES
+                num = i + (INTERVAL/2);
+            }*/
+            barHeight = ((freqArr[num] - 128) * 2) + 2;
+            //barHeight = (freqArr[num] * 1) + 2; //original one used
             //barHeight = (Math.abs(freqArr[i*(WIDTH/INTERVAL)]) - 120) * 2 + 1; //for time 
+            if(barHeight <= 1){
+                barHeight = 2;
+            }
             
 
             r = r + 10;
