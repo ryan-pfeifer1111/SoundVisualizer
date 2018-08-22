@@ -1,4 +1,5 @@
-var audio, canvas, context, audioctx, analyser, oscillator, freqArr, barHeight, source, colorSelect;
+var audio, canvas, context, audioctx, analyser, oscillator, freqArr, barHeight, source, colorSelect, canvasL, canvasR, contextL, contextR, grd1, grd2;
+var bigBars = 0;
 var colorStyle = 0;
 var pastIndex = 900;
 var WIDTH = 1024;
@@ -50,7 +51,13 @@ function initialize(){
     //analyser.getByteFrequencyData(freqArr);
 
     barHeight = HEIGHT;
+    /////////////////////////////////////////////////////////////////////
+    canvasL = document.getElementById("leftcnv"); 
+    contextL = canvasL.getContext("2d");
 
+    canvasR = document.getElementById("rightcnv"); 
+    contextR = canvasR.getContext("2d");
+    
     //draw();
     window.requestAnimationFrame(draw);
 }
@@ -111,10 +118,62 @@ function maxIndex(arr){ //finds the highest-numbered index with a nonzero value
     return maxIndex;
 }
 
+function drawSides(){
+    grd1 = contextL.createLinearGradient(0,0,250 * (bigBars/16),0);
+    grd2 = contextR.createLinearGradient(200,300,200 - (bigBars * 3),300);
+    if(colorStyle == 0){
+        grd1.addColorStop(0,"fuchsia");
+        grd1.addColorStop(1,"black"); //ORIGINAL rgb color cycle 
+        grd2.addColorStop(0,"fuchsia");
+        grd2.addColorStop(1,"black"); //ORIGINAL rgb color cycle 
+    }
+    else if(colorStyle == 1){
+        grd1.addColorStop(0,"red");
+        grd1.addColorStop(1,"black"); //red color gradient depending on height of bar
+        grd2.addColorStop(0,"red");
+        grd2.addColorStop(1,"black"); //red color gradient depending on height of bar
+    }
+    else if(colorStyle == 2){
+        grd1.addColorStop(0,"orange");
+        grd1.addColorStop(1,"black"); //orange color gradient depending on height of bar
+        grd2.addColorStop(0,"orange");
+        grd2.addColorStop(1,"black"); //orange color gradient depending on height of bar
+    }
+    else if(colorStyle == 3){
+        grd1.addColorStop(0,"yellow");
+        grd1.addColorStop(1,"black"); //yellow color gradient depending on height of bar
+        grd2.addColorStop(0,"yellow");
+        grd2.addColorStop(1,"black"); //yellow color gradient depending on height of bar
+    }
+    else if(colorStyle == 4){
+        grd1.addColorStop(0,"green");
+        grd1.addColorStop(1,"black"); //green color gradient depending on height of bar
+        grd2.addColorStop(0,"green");
+        grd2.addColorStop(1,"black"); //green color gradient depending on height of bar
+    }
+    else if(colorStyle == 5){
+        grd1.addColorStop(0,"blue");
+        grd1.addColorStop(1,"black"); //blue color gradient depending on height of bar
+        grd2.addColorStop(0,"blue");
+        grd2.addColorStop(1,"black"); //blue color gradient depending on height of bar
+    }
+    else{
+        grd1.addColorStop(0,"purple");
+        grd1.addColorStop(1,"black"); //purple color gradient depending on height of bar
+        grd2.addColorStop(0,"purple");
+        grd2.addColorStop(1,"black"); //purple color gradient depending on height of bar
+    }
 
+    contextL.fillStyle = grd1;
+    contextL.fillRect(0,0,300,500);
+
+    contextR.fillStyle = grd2;
+    contextR.fillRect(0,0,300,500);
+}
 
 function draw(){
     if(!audio.paused){
+        bigBars = 0;
         r = 0;
         g = 0;
         b = 255;
@@ -124,6 +183,9 @@ function draw(){
         //analyser.getByteTimeDomainData(freqArr);
         //console.log(freqArr);
         for(var i = 0; i < INTERVAL; i++){
+            if(i <= 16 && barHeight >= 254){
+                bigBars++;
+            }
             //barHeight = (Math.random() * HEIGHT);
             /*
             var max = maxIndex(freqArr);
@@ -194,6 +256,13 @@ function draw(){
         }
     }
 
+    if(bigBars >= 1){
+        drawSides();
+    }
+    else{
+        contextL.clearRect(0,0,300,500);
+        contextR.clearRect(0,0,300,500);
+    }
     window.requestAnimationFrame(draw); //OLD WAY
     //var fps = 30;
     //setTimeout(draw, 1000 / fps);

@@ -1,30 +1,38 @@
 body{
     background-color: black;
 }
-
-canvas{
-    /*padding: 0;
-    margin: auto;
+.leftCanvas{
+    width: 300px;
+    height: 500px;
+    padding: 0;
     display: block;
-    width: 1024px;
-    height: 350px;
     position: absolute;
     top: 0;
     bottom: 0;
     left: 0;
-    right: 0;*/
-    margin-left: 480px;
+    margin:auto; 
+}
+.rightCanvas{
+    width: 300px;
+    height: 500px;
+    padding: 0;
+    display: block;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    margin:auto; 
 }
 
-/*input{
+.visualizer{
+    width: 1024px;
+    height: 350px;
     padding: 0;
-    margin: auto;
     display: block;
-    width: 100px;
-    height: 100px;
     position: absolute;
     top: 0;
     bottom: 0;
     left: 0;
     right: 0;
-}*/
+    margin:auto;
+}
