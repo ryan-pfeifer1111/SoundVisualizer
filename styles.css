@@ -1,7 +1,18 @@
 body{
     background-color: black;
 }
-.leftCanvas{
+#circlecnv{
+    z-index: -1;
+    padding: 0;
+    display: block;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin:auto;
+}
+/*.leftCanvas{
     width: 300px;
     height: 500px;
     padding: 0;
@@ -22,7 +33,9 @@ body{
     bottom: 0;
     right: 0;
     margin:auto; 
-}
+}*/
+
+
 
 .visualizer{
     width: 1024px;

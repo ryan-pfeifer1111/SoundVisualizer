@@ -1,4 +1,5 @@
-var audio, canvas, context, audioctx, analyser, oscillator, freqArr, barHeight, source, colorSelect, canvasL, canvasR, contextL, contextR, grd1, grd2;
+var audio, canvas, context, audioctx, analyser, oscillator, freqArr, barHeight, source, colorSelect, canvasC, contextC, grd1, grd2;
+var windowWidth, windowHeight;
 var bigBars = 0;
 var colorStyle = 0;
 var pastIndex = 900;
@@ -52,11 +53,14 @@ function initialize(){
 
     barHeight = HEIGHT;
     /////////////////////////////////////////////////////////////////////
-    canvasL = document.getElementById("leftcnv"); 
-    contextL = canvasL.getContext("2d");
+    canvasC = document.getElementById("circlecnv"); 
+    contextC = canvasC.getContext("2d");
 
-    canvasR = document.getElementById("rightcnv"); 
-    contextR = canvasR.getContext("2d");
+    windowWidth = window.innerWidth;
+    windowHeight = window.innerHeight;
+
+    canvasC.width = windowWidth;
+    canvasC.height = windowHeight;
     
     //draw();
     window.requestAnimationFrame(draw);
@@ -119,56 +123,42 @@ function maxIndex(arr){ //finds the highest-numbered index with a nonzero value
 }
 
 function drawSides(){
-    grd1 = contextL.createLinearGradient(0,0,250 * (bigBars/16),0);
-    grd2 = contextR.createLinearGradient(200,300,200 - (bigBars * 3),300);
+    //grd1 = contextC.createLinearGradient(0,0,250 * (bigBars/16),0);
+    //grd1 = contextC.createRadialGradient(windowWidth/2, windowHeight/2, windowWidth * (bigBars/1), windowWidth, windowHeight, windowWidth);
+    grd1 = contextC.createRadialGradient(windowWidth/2, windowHeight/2, 800 - (bigBars*40), windowWidth/2, windowHeight/2, 2400);
     if(colorStyle == 0){
-        grd1.addColorStop(0,"fuchsia");
-        grd1.addColorStop(1,"black"); //ORIGINAL rgb color cycle 
-        grd2.addColorStop(0,"fuchsia");
-        grd2.addColorStop(1,"black"); //ORIGINAL rgb color cycle 
+        grd1.addColorStop(1,"fuchsia");
+        grd1.addColorStop(0,"black"); //ORIGINAL rgb color cycle 
     }
     else if(colorStyle == 1){
-        grd1.addColorStop(0,"red");
-        grd1.addColorStop(1,"black"); //red color gradient depending on height of bar
-        grd2.addColorStop(0,"red");
-        grd2.addColorStop(1,"black"); //red color gradient depending on height of bar
+        grd1.addColorStop(1,"red");
+        grd1.addColorStop(0,"black"); //red color gradient depending on height of bar
     }
     else if(colorStyle == 2){
-        grd1.addColorStop(0,"orange");
-        grd1.addColorStop(1,"black"); //orange color gradient depending on height of bar
-        grd2.addColorStop(0,"orange");
-        grd2.addColorStop(1,"black"); //orange color gradient depending on height of bar
+        grd1.addColorStop(1,"orange");
+        grd1.addColorStop(0,"black"); //orange color gradient depending on height of bar
     }
     else if(colorStyle == 3){
-        grd1.addColorStop(0,"yellow");
-        grd1.addColorStop(1,"black"); //yellow color gradient depending on height of bar
-        grd2.addColorStop(0,"yellow");
-        grd2.addColorStop(1,"black"); //yellow color gradient depending on height of bar
+        grd1.addColorStop(1,"yellow");
+        grd1.addColorStop(0,"black"); //yellow color gradient depending on height of bar
     }
     else if(colorStyle == 4){
-        grd1.addColorStop(0,"green");
-        grd1.addColorStop(1,"black"); //green color gradient depending on height of bar
-        grd2.addColorStop(0,"green");
-        grd2.addColorStop(1,"black"); //green color gradient depending on height of bar
+        grd1.addColorStop(1,"green");
+        grd1.addColorStop(0,"black"); //green color gradient depending on height of bar
     }
     else if(colorStyle == 5){
-        grd1.addColorStop(0,"blue");
-        grd1.addColorStop(1,"black"); //blue color gradient depending on height of bar
-        grd2.addColorStop(0,"blue");
-        grd2.addColorStop(1,"black"); //blue color gradient depending on height of bar
+        grd1.addColorStop(1,"blue");
+        grd1.addColorStop(0,"black"); //blue color gradient depending on height of bar
     }
     else{
-        grd1.addColorStop(0,"purple");
-        grd1.addColorStop(1,"black"); //purple color gradient depending on height of bar
-        grd2.addColorStop(0,"purple");
-        grd2.addColorStop(1,"black"); //purple color gradient depending on height of bar
+        grd1.addColorStop(1,"purple");
+        grd1.addColorStop(0,"black"); //purple color gradient depending on height of bar
     }
 
-    contextL.fillStyle = grd1;
-    contextL.fillRect(0,0,300,500);
+    contextC.fillStyle = grd1;
 
-    contextR.fillStyle = grd2;
-    contextR.fillRect(0,0,300,500);
+    //contextC.fillStyle = "rgb(" + 255 + "," + 255 + "," + 0 + ")";
+    contextC.fillRect(0,0,windowWidth,windowHeight);
 }
 
 function draw(){
@@ -183,7 +173,7 @@ function draw(){
         //analyser.getByteTimeDomainData(freqArr);
         //console.log(freqArr);
         for(var i = 0; i < INTERVAL; i++){
-            if(i <= 16 && barHeight >= 254){
+            if(/*i <= 20 &&*/ barHeight >= 240){
                 bigBars++;
             }
             //barHeight = (Math.random() * HEIGHT);
@@ -260,8 +250,7 @@ function draw(){
         drawSides();
     }
     else{
-        contextL.clearRect(0,0,300,500);
-        contextR.clearRect(0,0,300,500);
+        contextC.clearRect(0,0,windowWidth,windowHeight);
     }
     window.requestAnimationFrame(draw); //OLD WAY
     //var fps = 30;
