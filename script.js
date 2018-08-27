@@ -143,15 +143,15 @@ function drawSides(){
         grd1.addColorStop(0,"black"); //yellow color gradient depending on height of bar
     }
     else if(colorStyle == 4){
-        grd1.addColorStop(1,"green");
+        grd1.addColorStop(1,"LightGreen");
         grd1.addColorStop(0,"black"); //green color gradient depending on height of bar
     }
     else if(colorStyle == 5){
-        grd1.addColorStop(1,"blue");
+        grd1.addColorStop(1,"DodgerBlue");
         grd1.addColorStop(0,"black"); //blue color gradient depending on height of bar
     }
     else{
-        grd1.addColorStop(1,"purple");
+        grd1.addColorStop(1,"fuchsia");
         grd1.addColorStop(0,"black"); //purple color gradient depending on height of bar
     }
 
@@ -173,7 +173,7 @@ function draw(){
         //analyser.getByteTimeDomainData(freqArr);
         //console.log(freqArr);
         for(var i = 0; i < INTERVAL; i++){
-            if(/*i <= 20 &&*/ barHeight >= 240){
+            if(/*i <= 50 &&*/ barHeight >= 240){
                 bigBars++;
             }
             //barHeight = (Math.random() * HEIGHT);
