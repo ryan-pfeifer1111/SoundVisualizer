@@ -5,25 +5,28 @@
 </head>
 <body onload="initialize()">
     <canvas id="circlecnv"></canvas>
-
-        <audio controls id="audio"></audio>
-        <input id="audioFile" type="file" accept="Audio/*" capture/> 
-
-        <select id="colorSelect" onchange="changeColor()">
-            <option value="0">Color Spectrum</option>
-            <option value="1">Red</option>
-            <option value="2">Orange</option>
-            <option value="3">Yellow</option>
-            <option value="4">Green</option>
-            <option value="5">Blue</option>
-            <option value="6">Purple</option>
-        </select>
+    <div id="UI">
+        <canvas id="topcnv"></canvas>
+        <div class="topBar">
+            <audio controls id="audio"></audio>
+            <input id="audioFile" type="file" accept="Audio/*" capture/> 
+            <select id="colorSelect" onchange="changeColor()">
+                <option value="0">Color Spectrum</option>
+                <option value="1">Red</option>
+                <option value="2">Orange</option>
+                <option value="3">Yellow</option>
+                <option value="4">Green</option>
+                <option value="5">Blue</option>
+                <option value="6">Purple</option>
+            </select>
+        </div>
+    </div>
 
         <p></p>
 
         <!--<canvas class="leftCanvas" id="leftcnv" width="300" height="500"></canvas>-->
         <canvas class="visualizer" id="cnv1" width="1024" height="350"></canvas>
-        <canvas class="rightCanvas" id="rightcnv" width="300" height="500"></canvas> <!--delete this once circle canvas is good to go-->
+        <!--<canvas class="rightCanvas" id="rightcnv" width="300" height="500"></canvas> delete this once circle canvas is good to go-->
         
        
 

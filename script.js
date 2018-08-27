@@ -61,6 +61,15 @@ function initialize(){
 
     canvasC.width = windowWidth;
     canvasC.height = windowHeight;
+
+    var canvasTop = document.getElementById("topcnv"); //drawing the canvas
+    var contextTop = canvasTop.getContext("2d");
+
+    canvasTop.width = windowWidth;
+    canvasTop.height = 75;
+
+    contextTop.fillStyle = "rgb(" + 128 + "," + 128 + "," + 128 + ")";
+    contextTop.fillRect(0,0, windowWidth, 75);
     
     //draw();
     window.requestAnimationFrame(draw);
