@@ -1,5 +1,5 @@
 var audio, canvas, context, audioctx, analyser, oscillator, freqArr, barHeight, source, colorSelect, canvasC, contextC, grd1, grd2;
-var windowWidth, windowHeight;
+var windowWidth, windowHeight, topDiv;
 var bigBars = 0;
 var colorStyle = 0;
 var pastIndex = 900;
@@ -16,8 +16,8 @@ var x = 0;
 //2. RESOLVE ISSUE OF SCALING THE BARS BASED ON MAX FREQUENCY>> BECOMES NON-ISSUE IF FFT SIZE IS SAME AS INTERVAL
 //3. NEED TO ADD OPTION TO CHOOSE COLOR PALETTE>> DONE
 //4. NEED TO ADD VOLUME SLIDER
-//5. NEED TO ORGANIZE LAYOUT AND CSS
-//6. NEED TO MAKE BACKGROUND EFFECTS
+//5. NEED TO ORGANIZE LAYOUT AND CSS >>DONE
+//6. NEED TO MAKE BACKGROUND EFFECTS >>DONE
 //7. MAYBE ADD SONGS TO QUEUE? SHUFFLE FROM FOLDER?
 
 function initialize(){
@@ -33,15 +33,6 @@ function initialize(){
     
     oscillator = audioctx.createOscillator();
     oscillator.connect(audioctx.destination);
-
-    //source = audioctx.createMediaElementSource(audio);
-    //source.connect(analyser);
-    //source.connect(audioctx.destination);
-    //analyser.connect(audioctx.destination); //THIS WAS MAKING MY MUSIC NOT PLAY
-
-    //source = audioctx.createMediaElementSource(audio);    
-    //source.connect(analyser);
-    //source.connect(audioctx.destination); //from online help
 
     ////var buffer = audioctx.createBufferSource();
     source = audioctx.createMediaElementSource(audio);    
@@ -70,8 +61,9 @@ function initialize(){
 
     contextTop.fillStyle = "rgb(" + 128 + "," + 128 + "," + 128 + ")";
     contextTop.fillRect(0,0, windowWidth, 75);
+
+    topDiv = document.getElementById("UI");
     
-    //draw();
     window.requestAnimationFrame(draw);
 }
 
@@ -264,4 +256,16 @@ function draw(){
     window.requestAnimationFrame(draw); //OLD WAY
     //var fps = 30;
     //setTimeout(draw, 1000 / fps);
+}
+
+function mouseOverUI(){
+    //UI.style.display = "block";
+    clearTimeout(myTime);
+    UI.style.opacity = 1;
+}
+
+function mouseOutUI(){
+    //UI.style.display = "none";
+    clearTimeout(myTime);
+    UI.style.opacity = 0;
 }

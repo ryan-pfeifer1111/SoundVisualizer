@@ -5,7 +5,7 @@
 </head>
 <body onload="initialize()">
     <canvas id="circlecnv"></canvas>
-    <div id="UI">
+    <div id="UI" onmouseover="mouseOverUI()" onmouseout="myTime = setTimeout(mouseOutUI, 3000)">
         <canvas id="topcnv"></canvas>
         <div class="topBar">
             <audio controls id="audio"></audio>
