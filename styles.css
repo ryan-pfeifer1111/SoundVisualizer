@@ -33,31 +33,6 @@ body{
     margin:auto;
     opacity: .65;
 }
-/*.leftCanvas{
-    width: 300px;
-    height: 500px;
-    padding: 0;
-    display: block;
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    margin:auto; 
-}
-.rightCanvas{
-    width: 300px;
-    height: 500px;
-    padding: 0;
-    display: block;
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    right: 0;
-    margin:auto; 
-}*/
-
-
-
 .visualizer{
     width: 1024px;
     height: 350px;

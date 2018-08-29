@@ -5,11 +5,13 @@
 </head>
 <body onload="initialize()">
     <canvas id="circlecnv"></canvas>
-    <div id="UI" onmouseover="mouseOverUI()" onmouseout="myTime = setTimeout(mouseOutUI, 3000)">
+    <div id="UI" onmouseover="mouseOverUI()" > <!--</div>onmouseout="myTime = setTimeout(mouseOutUI, 3000)">-->
         <canvas id="topcnv"></canvas>
         <div class="topBar">
             <audio controls id="audio"></audio>
             <input id="audioFile" type="file" accept="Audio/*" capture/> 
+            <img id="volIcon" src="VolumeSliderIcon.png" width="25" height="25">
+            <input id="volumeSlider" type="range" min="0" max="100" value="30" onchange="changeVolume()">
             <select id="colorSelect" onchange="changeColor()">
                 <option value="0">Color Spectrum</option>
                 <option value="1">Red</option>
@@ -21,17 +23,8 @@
             </select>
         </div>
     </div>
-
-        <p></p>
-
-        <!--<canvas class="leftCanvas" id="leftcnv" width="300" height="500"></canvas>-->
-        <canvas class="visualizer" id="cnv1" width="1024" height="350"></canvas>
-        <!--<canvas class="rightCanvas" id="rightcnv" width="300" height="500"></canvas> delete this once circle canvas is good to go-->
-        
-       
-
-
+    <p></p>
+    <canvas class="visualizer" id="cnv1" width="1024" height="350"></canvas>
     <script src="script.js"></script>
 </body>
-
 </html>

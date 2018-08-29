@@ -1,5 +1,5 @@
 var audio, canvas, context, audioctx, analyser, oscillator, freqArr, barHeight, source, colorSelect, canvasC, contextC, grd1, grd2;
-var windowWidth, windowHeight, topDiv;
+var windowWidth, windowHeight, topDiv, vol, myTime;
 var bigBars = 0;
 var colorStyle = 0;
 var pastIndex = 900;
@@ -11,6 +11,7 @@ var r = 0;
 var g = 0;
 var b = 255;
 var x = 0;
+var currVol = .3;
 
 //1. NEED TO FIX ISSUE OF ONLY BEING ABLE TO PLAY ONE SONG BEFORE THE PROGRAM CRASHES>> FIXED
 //2. RESOLVE ISSUE OF SCALING THE BARS BASED ON MAX FREQUENCY>> BECOMES NON-ISSUE IF FFT SIZE IS SAME AS INTERVAL
@@ -24,6 +25,8 @@ function initialize(){
     canvas = document.getElementById("cnv1"); //drawing the canvas
     context = canvas.getContext("2d");
     audio = document.getElementById("audio");
+    audio.volume = .3;
+    vol = document.getElementById("volumeSlider");
     colorSelect = document.getElementById("colorSelect");
     //audio.src = document.getElementById("audioFile");
 
@@ -34,13 +37,11 @@ function initialize(){
     oscillator = audioctx.createOscillator();
     oscillator.connect(audioctx.destination);
 
-    ////var buffer = audioctx.createBufferSource();
     source = audioctx.createMediaElementSource(audio);    
     source.connect(analyser);
-    source.connect(audioctx.destination); //from online help
+    source.connect(audioctx.destination);
 
     freqArr = new Uint8Array(analyser.frequencyBinCount);
-    //analyser.getByteFrequencyData(freqArr);
 
     barHeight = HEIGHT;
     /////////////////////////////////////////////////////////////////////
@@ -53,7 +54,7 @@ function initialize(){
     canvasC.width = windowWidth;
     canvasC.height = windowHeight;
 
-    var canvasTop = document.getElementById("topcnv"); //drawing the canvas
+    var canvasTop = document.getElementById("topcnv");
     var contextTop = canvasTop.getContext("2d");
 
     canvasTop.width = windowWidth;
@@ -63,6 +64,7 @@ function initialize(){
     contextTop.fillRect(0,0, windowWidth, 75);
 
     topDiv = document.getElementById("UI");
+    topDiv.onmouseout = function(){myTime = setTimeout(mouseOutUI, 3000)}
     
     window.requestAnimationFrame(draw);
 }
@@ -84,12 +86,9 @@ audioFile.onchange = function(){ //plays the user's uploaded audio file when it 
     }
     reader.readAsDataURL(this.files[0]);
     window.requestAnimationFrame(draw);
-    //initialize();
-    //draw();
 }
 
 function changeColor(){
-    //var selection = colorSelect.value();
     if(colorSelect.selectedIndex == 0){
         colorStyle = 0;
     }
@@ -113,7 +112,7 @@ function changeColor(){
     }
 }
 
-function maxIndex(arr){ //finds the highest-numbered index with a nonzero value
+/*function maxIndex(arr){ //finds the highest-numbered index with a nonzero value
     var maxIndex = 0;
     for(var i = 1; i < arr.length; i++){
         if(arr[i] != 0){
@@ -121,11 +120,10 @@ function maxIndex(arr){ //finds the highest-numbered index with a nonzero value
         }
     }
     return maxIndex;
-}
+}*/
 
 function drawSides(){
-    //grd1 = contextC.createLinearGradient(0,0,250 * (bigBars/16),0);
-    //grd1 = contextC.createRadialGradient(windowWidth/2, windowHeight/2, windowWidth * (bigBars/1), windowWidth, windowHeight, windowWidth);
+    //this is for the circular colors that come in from the sides of the screen
     grd1 = contextC.createRadialGradient(windowWidth/2, windowHeight/2, 800 - (bigBars*40), windowWidth/2, windowHeight/2, 2400);
     if(colorStyle == 0){
         grd1.addColorStop(1,"fuchsia");
@@ -157,8 +155,6 @@ function drawSides(){
     }
 
     contextC.fillStyle = grd1;
-
-    //contextC.fillStyle = "rgb(" + 255 + "," + 255 + "," + 0 + ")";
     contextC.fillRect(0,0,windowWidth,windowHeight);
 }
 
@@ -171,39 +167,18 @@ function draw(){
         x = 0;
         context.clearRect(0,0,WIDTH, HEIGHT);
         analyser.getByteFrequencyData(freqArr);
-        //analyser.getByteTimeDomainData(freqArr);
-        //console.log(freqArr);
         for(var i = 0; i < INTERVAL; i++){
-            if(/*i <= 50 &&*/ barHeight >= 240){
+            if(/*i <= 50 &&*/ barHeight >= (240 /* currVol*/)){
                 bigBars++;
             }
-            //barHeight = (Math.random() * HEIGHT);
-            /*
-            var max = maxIndex(freqArr);
-            //console.log(max);
-            if(Math.abs(max - pastIndex) >= 300){
-                pastIndex = max;
-            }
-            else{
-                max = pastIndex;
-            }   //not sure if this really give a great effect
-            //console.log(max);
-            */
-            max = 900; //default placeholder
-            //var num = (max - INTERVAL*Math.floor(max/INTERVAL)) + (Math.floor(max/INTERVAL)*i);
+            //max = 900; //default placeholder
             var num = i;
-            /*if(i >= INTERVAL/4){ //SKIPS MIDDLE FREQUENCIES
-                num = i + (INTERVAL/2);
-            }*/
             barHeight = ((freqArr[num] - 128) * 2) + 2;
-            //barHeight = (freqArr[num] * 1) + 2; //original one used
-            //barHeight = (Math.abs(freqArr[i*(WIDTH/INTERVAL)]) - 120) * 2 + 1; //for time 
             if(barHeight <= 1){
                 barHeight = 2;
             }
             
-
-            r = r + 10;
+            r = r + 10; //this is for the color spectrum
             if(r > 255){
                 r = 255;
             }
@@ -216,9 +191,8 @@ function draw(){
             b = 0;
             }
 
-            //I SHOULD MAKE AN OPTION TO TOGGLE BETWEEN DIFFERENT COLOR PALETTES
             if(colorStyle == 0){
-                context.fillStyle = "rgb(" + r + "," + g + "," + b + ")"; //ORIGINAL rgb color cycle 
+                context.fillStyle = "rgb(" + r + "," + g + "," + b + ")"; //rgb color cycle 
             }
             else if(colorStyle == 1){
                 context.fillStyle = "rgb(" + ((2/3)*(barHeight)) + "," + (0*(barHeight)) + "," + (0*(barHeight)) + ")"; //red color gradient depending on height of bar
@@ -239,10 +213,7 @@ function draw(){
                 context.fillStyle = "rgb(" + (1*(barHeight)) + "," + (0*(barHeight)) + "," + (1*(barHeight)) + ")"; //purple color gradient depending on height of bar
             }
 
-
-            //context.restore();
             context.fillRect(x, HEIGHT - barHeight, (WIDTH/INTERVAL) - 1 , barHeight);
-            //context.fillRect(x,HEIGHT - barHeight/2, 6, barHeight);
             x = x + (WIDTH/INTERVAL);
         }
     }
@@ -253,19 +224,20 @@ function draw(){
     else{
         contextC.clearRect(0,0,windowWidth,windowHeight);
     }
-    window.requestAnimationFrame(draw); //OLD WAY
-    //var fps = 30;
-    //setTimeout(draw, 1000 / fps);
+    window.requestAnimationFrame(draw);
 }
 
 function mouseOverUI(){
-    //UI.style.display = "block";
     clearTimeout(myTime);
     UI.style.opacity = 1;
 }
 
 function mouseOutUI(){
-    //UI.style.display = "none";
     clearTimeout(myTime);
     UI.style.opacity = 0;
+}
+
+function changeVolume(){
+    currVol = (vol.value/100);
+    audio.volume = currVol;
 }
