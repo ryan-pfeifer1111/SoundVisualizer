@@ -12,6 +12,9 @@ var g = 0;
 var b = 255;
 var x = 0;
 var currVol = .3;
+///////////////////////////////////////////////
+var soundQueue = [];
+///////////////////////////////////////////////
 
 //1. NEED TO FIX ISSUE OF ONLY BEING ABLE TO PLAY ONE SONG BEFORE THE PROGRAM CRASHES>> FIXED
 //2. RESOLVE ISSUE OF SCALING THE BARS BASED ON MAX FREQUENCY>> BECOMES NON-ISSUE IF FFT SIZE IS SAME AS INTERVAL
@@ -69,20 +72,51 @@ function initialize(){
     window.requestAnimationFrame(draw);
 }
 
+function playMusic(){ //this will need some work 
+    var i = 0;
+    ///////////////////////////////////////////////
+    audio = document.getElementById("audio");
+    var reader = new FileReader();
+    reader.onload = function(e){
+        /*
+        audio.src = this.result;
+        audio.controls = true;
+        audio.crossOrigin = "anonymous";
+        source.connect(analyser);
+        source.connect(audioctx.destination);
+        */
+    /////////////////////////////////////////////
+        while(i != soundQueue.length){
+            console.log("Currently playing: " + song)
+            var song = soundQueue[i];
+            audio.play();
+            reader.readAsDataURL(this.files[i]);
+            i++;
+        }
+    }
+}
+
 audioFile.onchange = function(){ //plays the user's uploaded audio file when it is uploaded
+
     audio = document.getElementById("audio");
     var reader = new FileReader();
     reader.onload = function(e){
         audio.src = this.result;
         audio.controls = true;
         audio.crossOrigin = "anonymous";
+        /////////////////////////////////////////////////////////
+        audioElement = new Audio(this.result);
+        soundQueue.push(audioElement);
+        console.log("element pushed to the soundQueue");
+        console.log(soundQueue);
+        ////////////////////////////////////////////////////////
         //
-        /*source = audioctx.createMediaElementSource(audio);    
+        //source = audioctx.createMediaElementSource(audio);    
         source.connect(analyser);
-        source.connect(audioctx.destination); //from online help*/
+        source.connect(audioctx.destination); //from online help///
         //colorStyle = Math.round(Math.random() * 6); //random color palete if you switch songs
         //
-        audio.play();
+        //audio.play();
     }
     reader.readAsDataURL(this.files[0]);
     window.requestAnimationFrame(draw);
