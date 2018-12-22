@@ -83,6 +83,7 @@ audioFile.onchange = function(){ //plays the user's uploaded audio file when it 
         //colorStyle = Math.round(Math.random() * 6); //random color palete if you switch songs
         //
         audio.play();
+        audioctx.resume();
     }
     reader.readAsDataURL(this.files[0]);
     window.requestAnimationFrame(draw);
